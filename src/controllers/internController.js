@@ -14,6 +14,12 @@ const isValid = function (value) {
     if (typeof value === 'string' && value.trim().length === 0) return false
     return true;
 }
+const isValidEmail = function(value){
+    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value.trim()))
+}
+const isValidMobile = function(value){
+    return (/^\d{10}$/.test(value))
+}
 const isValidRequestBody = function (requestBody) {
     return Object.keys(requestBody).length > 0
 }
@@ -33,11 +39,11 @@ const registerIntern = async function (req, res) {
             res.status(400).send({ status: false, message: "email is required and should be valid" })
             return
         }
-        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.trim()))) {
+        if (!isValidEmail(email)) {
             res.status(400).send({ status: false, message: `Email should be a valid email address` })
             return
         }
-        if (!(/^\d{10}$/.test(mobile))) {
+        if (!isValidMobile(mobile)) {
             res.status(400).send({ status: false, message: `mobile should be a valid` })
             return
         }

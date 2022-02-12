@@ -20,20 +20,20 @@ const createCollege = async function(req,res){
     try{
         const requestBody = req.body
         if(!isValidRequestBody(requestBody)){
-            return
+            return res.status(400).send({status:false, message:'request body not found'})
         }
         const {name, fullName, logoLink} = requestBody
         if (!isValid(name)) {
             res.status(400).send({ status: false, message: "Name is required and should be valid Name" })
-            return
+            return res.status(400).send({status:false, message:'name is required'})
         }
         if (!isValid(fullName)) {
             res.status(400).send({ status: false, message: "fullName is required and should be valid fullName" })
-            return
+            return res.status(400).send({status:false, message:'full name is required'})
         }
         if (!isValid(logoLink)) {
             res.status(400).send({ status: false, message: "logoLink is required and should be valid" })
-            return
+            return res.status(400).send({status:false, message:'logo is required'})
         }
         if (!validUrl.isUri(logoLink)) {
             res.status(400).send({ status: false, message: "Invalid logoLink " })
@@ -70,7 +70,7 @@ const getCollegeDetails = async function(req,res){
         name.toLowerCase()
         const college = await collegeModel.findOne({name, isDeleted:false})
         if(!college){
-            return 
+            return res.status(404).send({status:false, message:'college not found'})
         }
         const collegeId = college._id
         const internsDetails = await internModel.find({collegeId, isDeleted:false})
